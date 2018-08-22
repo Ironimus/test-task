@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import BookTableHead from './BookTableHead';
 import BookTableBody from './BookTableBody';
 import { Table } from '@material-ui/core';
-import { setSorting, fetchBooks, changePage } from '../../../actions/actions';
+import { setSorting } from '../../../actions/actions';
 
 const bookProperties = [
   {id: 'id', name: 'Id'},
@@ -11,7 +12,7 @@ const bookProperties = [
   {id: 'date_of_publication', name: 'Date of publication'}
 ];
 
-const BooksTable = ({ bookArray, onHeaderClick, sorting, searchQuery }) => (
+const BooksTable = ({ bookArray, onHeaderClick, sorting }) => (
   <Table>
     <BookTableHead
       onClick={onHeaderClick}
@@ -20,8 +21,6 @@ const BooksTable = ({ bookArray, onHeaderClick, sorting, searchQuery }) => (
       {bookProperties}
     </BookTableHead>
     <BookTableBody
-      searchQuery={searchQuery}
-      sorting={sorting}
       bookProperties={bookProperties}
     >
       {bookArray}
@@ -29,16 +28,21 @@ const BooksTable = ({ bookArray, onHeaderClick, sorting, searchQuery }) => (
   </Table>
 );
 
-const mapStateToProps = ({ bookList: { bookArray, sorting, searchQuery } }) => ({
+BooksTable.propTypes = {
+  bookArray: PropTypes.array.isRequired,
+  sorting: PropTypes.shape({
+    by: PropTypes.string,
+    order: PropTypes.oneOf(['asc', 'desc'])
+  })
+};
+
+const mapStateToProps = ({ bookList: { bookArray, sorting } }) => ({
   bookArray,
-  sorting,
-  searchQuery
+  sorting
 });
 
 const mapDispatchToProps = dispatch => ({
-  onHeaderClick: sorting => dispatch(setSorting(sorting)),
-  loadBooks: (page, limit) => dispatch(fetchBooks(page, limit)),
-  changePage: (page, limit) => dispatch(changePage(page, limit))
+  onHeaderClick: sorting => dispatch(setSorting(sorting))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BooksTable)

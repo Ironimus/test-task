@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -8,15 +9,15 @@ import {
   TableCell
 } from '@material-ui/core';
 
-export default ({ children }) => (
+const ShowBook = ({ children, bookProperties }) => (
   <Fragment>
     <Table>
       <TableBody>
-        {Object.keys(children).map(key => (
-          <TableRow key={key}>
-            <TableCell>{key}</TableCell>
+        {bookProperties.map(property => (
+          <TableRow key={property.id}>
+            <TableCell>{property.name}</TableCell>
             <TableCell>
-              {children[key]}
+              {children[property.id]}
             </TableCell>
           </TableRow>
         ))}
@@ -32,3 +33,13 @@ export default ({ children }) => (
     >Back to book list</Button>
   </Fragment>
 );
+
+ShowBook.propTypes = {
+  children: PropTypes.object.isRequired,
+  bookProperties: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string
+  })).isRequired
+};
+
+export default ShowBook;

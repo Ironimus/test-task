@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TextField } from '@material-ui/core';
 import { setSearchQuery } from '../../../actions/actions';
@@ -11,6 +12,10 @@ const SearchField = ({ onChange }) => (
     type='search'
   />
 );
+
+SearchField.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
 
 const mapDispatchToProps = dispatch => ({
   onChange: event => 

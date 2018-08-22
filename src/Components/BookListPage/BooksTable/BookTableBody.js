@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   TableBody,
   TableCell,
@@ -7,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-export default ({ children, bookProperties }) => (
+const BookTableBody = ({ children, bookProperties }) => (
   <TableBody>
     {children.map(book => (
       <TableRow key={book.id}>
@@ -24,3 +25,13 @@ export default ({ children, bookProperties }) => (
     ))}
   </TableBody>
 );
+
+BookTableBody.propTypes = {
+  children: PropTypes.array.isRequired,
+  bookProperties: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string
+  })).isRequired
+};
+
+export default BookTableBody;

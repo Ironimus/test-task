@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SearchField from './SearchField';
 import BooksTable from './BooksTable'
@@ -65,6 +66,22 @@ class BookListPage extends Component {
     );
   }
 }
+
+BookListPage.propTypes = {
+  listLength: PropTypes.number,
+  isLoading: PropTypes.bool,
+  searchQuery: PropTypes.string,
+  sorting: PropTypes.shape({
+    by: PropTypes.string,
+    order: PropTypes.oneOf(['asc', 'desc']),
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      page: PropTypes.string,
+      limit: PropTypes.string
+    })
+  })
+};
 
 const mapStateToProps = ({bookList: { listLength, searchQuery, sorting }, root: { isLoading } }) => ({
   listLength,

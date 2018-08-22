@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from'prop-types';
 import {
   TableHead,
   TableCell,
@@ -6,7 +7,7 @@ import {
   TableSortLabel
 } from '@material-ui/core';
 
-export default ({ children, sorting, onClick}) => (
+const BookTableHead = ({ children, sorting, onClick}) => (
   <TableHead>
     <TableRow>
       {children.map(property => (
@@ -29,3 +30,17 @@ export default ({ children, sorting, onClick}) => (
     </TableRow>
   </TableHead>
 );
+
+BookTableHead.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string
+  })).isRequired,
+  sorting: PropTypes.shape({
+    by: PropTypes.string,
+    order: PropTypes.oneOf(['asc', 'desc']),
+  }),
+  onClick: PropTypes.func
+};
+
+export default BookTableHead;

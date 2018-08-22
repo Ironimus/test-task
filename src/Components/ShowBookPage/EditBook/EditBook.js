@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -21,7 +22,7 @@ class EditBook extends Component {
     this.setState({[field]: event.target.value})
 
   render() {
-    const { children, onSave, bookProperties } = this.props;
+    const { children, onSave, bookProperties, isLoading } = this.props;
     return (
       <Fragment>
         <Table>
@@ -40,7 +41,7 @@ class EditBook extends Component {
           </TableBody>
         </Table>
         <Button
-          disabled={!Object.keys(this.state)
+          disabled={isLoading || !Object.keys(this.state)
             .some(key => this.state[key] !== children[key])} // shallow object comparison
           onClick={() => onSave(children.id, this.state)}
         >Save</Button>
@@ -57,8 +58,22 @@ class EditBook extends Component {
   }
 }
 
+EditBook.propTypes = {
+  children: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired,
+  bookProperties: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string
+  })).isRequired,
+  isLoading: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = ( { root: { isLoading } } ) => ({
+  isLoading
+});
+
 const mapDispatchToProps = dispatch => ({
   onSave: (id, book) => dispatch(changeBook(id, book))
 });
 
-export default connect(null, mapDispatchToProps)(EditBook)
+export default connect(mapStateToProps, mapDispatchToProps)(EditBook)

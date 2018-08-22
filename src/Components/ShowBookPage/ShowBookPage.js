@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { fetchBook } from '../../actions/actions';
@@ -35,6 +36,15 @@ class ShowBookPage extends Component {
     )
   }
 }
+
+ShowBookPage.propTypes = {
+  book: PropTypes.object.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    })
+  }).isRequired
+};
 
 const mapStateToProps = ({ book }) => ({
   book
